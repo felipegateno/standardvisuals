@@ -1,0 +1,13 @@
+Package: rstandarvisuals
+Title: Estilo estándar mínimo para ggplot2
+Version: 0.1.0
+Authors@R: person("Felipe", "Gateno", role = c("aut", "cre"))
+Description: Crea un theme de ggplot2 desde style_tokens.json con tipografía, bordes y grillas.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports:
+    ggplot2,
+    jsonlite,
+    grid
+
