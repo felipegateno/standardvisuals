@@ -62,7 +62,7 @@ Ejemplo simplificado:
 ### 1) Clonar el repositorio (opcional)
 
 ```bash
-git clone https://github.com/felipegatneo/standardvisuals.git
+git clone https://github.com/felipegateno/standardvisuals.git
 cd standardvisuals
 ```
 
@@ -97,7 +97,7 @@ Si no están, se usará la fuente por defecto del sistema.
 
 ```r
 install.packages("remotes")
-remotes::install_github("felipegatneo/standardvisuals", subdir = "rstandarvisuals")
+remotes::install_github("felipegateno/standardvisuals", subdir = "rstandarvisuals")
 ```
 
 ### Opción B: usar el script directamente desde el repo
@@ -118,7 +118,7 @@ print(p)
 ### Opción A: instalar el paquete desde GitHub
 
 ```bash
-pip install git+https://github.com/felipegatneo/standardvisuals.git#subdirectory=pystandarvisuals
+pip install git+https://github.com/felipegateno/standardvisuals.git#subdirectory=pystandarvisuals
 ```
 
 ### Opción B: usar el código desde el repo
