@@ -1,6 +1,6 @@
 # Standard Visuals - Estándar mínimo de estilo
 
-Este repositorio define un estándar **mínimo** de estilo para gráficos en R (ggplot2) y Python (matplotlib). El objetivo es aplicar el mismo look-and-feel desde un único archivo `style_tokens.json`.
+Este repositorio tiene como objetivo homogenizar las gráficas generadas en R (ggplot2) y Python (matplotlib), estandarizando tipos y tamaño de letras, estilos de grilla, colors de fondo, etc. El repositorio cuenta también con funciones para poder extraer paletas de colores, con el objetivo de trabajar con exactamente los mismos tonos en las gráficas.
 
 ## Estructura del Proyecto
 
@@ -29,13 +29,13 @@ standardvisuals/
 
 ## Archivo de Tokens
 
-`style_tokens.json` contiene solo:
+`style_tokens.json` contiene la definición de atributos asociados a:
 
 - **Tipografía**: título, subtítulo, títulos de ejes, texto de ejes y títulos de panel.
 - **Bordes**: marco de figura y panel.
 - **Grillas**: mayor y menor.
 
-Ejemplo simplificado:
+Un ejemplo simplificado de este archivo es:
 
 ```json
 {
@@ -57,16 +57,30 @@ Ejemplo simplificado:
 }
 ```
 
+La fuente definida para los gráficos es Inter, cuya previsuzalización se presenta a continuación:
+
+![Inter preview](assets/Inter_preview.png)
+
+
+## Paletas de color (colors.json)
+
+`colors.json` incluye paletas estándar para uso homogéneo en R y Python.
+
+Paletas disponibles:
+- `standarscolors_obsvssim` (2 colores)
+- `standarscolors_divergent`(30 colores)
+- `standarscolors_terrain` (11 colores)
+- `standardscolors_rdylbu` (11 colores)
+- `standardscolors_rdylgn` (11 colores)
+- `standardscolors_rdbu` (11 colores)
+
+Vista previa:
+
+![Vista previa de paletas](assets/palette_preview.png)
+
 ## Instalación desde GitHub
 
-### 1) Clonar el repositorio (opcional)
-
-```bash
-git clone https://github.com/felipegateno/standardvisuals.git
-cd standardvisuals
-```
-
-### 2) Dependencias
+### Dependencias
 
 **R**:
 
@@ -80,29 +94,14 @@ install.packages(c("jsonlite", "ggplot2"))
 pip install matplotlib pandas
 ```
 
-### 3) Fuente Inter
-
-Las fuentes Inter vienen incluidas dentro de los paquetes. Si trabajas desde el repo (sin instalar),
-asegúrate de que existan en `assets/fonts/Inter/`. Si no están, descárgalas desde:
-https://github.com/rsms/inter/releases
-
-Archivos esperados:
-- `Inter-Regular.ttf`
-- `Inter-SemiBold.ttf`
 
 ## Uso en R (ggplot2)
 
-### Opción A: instalar el paquete desde GitHub
+### Instalar el paquete desde GitHub y estandarizar gráficas
 
 ```r
 install.packages("remotes")
 remotes::install_github("felipegateno/standardvisuals", subdir = "rstandarvisuals")
-```
-
-### Opción B: usar el script directamente desde el repo
-
-```r
-source("rstandarvisuals/R/create_theme_from_tokens.R")
 
 p <- ggplot(data, aes(x, y)) +
   geom_line() +
@@ -112,23 +111,34 @@ p <- ggplot(data, aes(x, y)) +
 print(p)
 ```
 
+### Paletas de colores
+
+```r
+library(rstandarvisuals)
+
+pal <- get_palette("standarscolors_obsvssim")
+# pal es un vector de colores hex
+```
+
+Para obtener solo `n` colores (máximo = tamaño de la paleta):
+
+```r
+pal <- get_palette("standarscolors_divergent", n = 7)
+```
+
 ## Uso en Python (matplotlib)
 
-### Opción A: instalar el paquete desde GitHub
+### Instalar el paquete desde GitHub y estandarizar gráficas
 
 ```bash
 pip install git+https://github.com/felipegateno/standardvisuals.git#subdirectory=pystandarvisuals
 ```
 
-### Opción B: usar el código desde el repo
-
 ```python
 import os
 import sys
 import matplotlib.pyplot as plt
-
-sys.path.insert(0, os.path.join(os.getcwd(), "pystandarvisuals", "src"))
-from pystandarvisuals import create_theme_from_tokens
+from pystandarvisuals import create_theme_from_tokens, get_palette
 
 fig, ax = plt.subplots()
 ax.plot(x, y)
@@ -138,6 +148,21 @@ ax.set_ylabel("Eje Y")
 
 create_theme_from_tokens(ax)
 plt.show()
+```
+
+### Paletas de colores
+
+```python
+from pystandarvisuals import get_palette
+
+pal = get_palette("standarscolors_obsvssim")
+# pal es una lista de colores hex
+```
+
+Para obtener solo `n` colores (máximo = tamaño de la paleta):
+
+```python
+pal = get_palette("standarscolors_divergent", n=7)
 ```
 
 Si usas `subplots=True` en pandas:

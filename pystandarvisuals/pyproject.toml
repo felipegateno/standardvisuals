@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pystandarvisuals"
-version = "0.1.0"
+version = "0.2.0"
 description = "Estilo estándar mínimo para visualizaciones con matplotlib"
 requires-python = ">=3.9"
 dependencies = ["matplotlib"]
@@ -15,6 +15,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 pystandarvisuals = [
   "data/style_tokens.json",
+  "data/colors.json",
   "assets/fonts/Inter/*.ttf",
 ]
 
