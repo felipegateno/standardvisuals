@@ -20,6 +20,23 @@ create_theme_from_tokens <- function(tokens_path = NULL) {
   typo <- tokens$typography
   borders <- tokens$borders
   grid <- tokens$grid
+
+  font_dir <- system.file("assets", "fonts", "Inter", package = "rstandarvisuals")
+  if (font_dir != "" && dir.exists(font_dir)) {
+    regular_font <- file.path(font_dir, "Inter-Regular.ttf")
+    semibold_font <- file.path(font_dir, "Inter-SemiBold.ttf")
+    if (file.exists(regular_font) && file.exists(semibold_font)) {
+      try({
+        font_add_fn <- utils::getFromNamespace("font_add", "sysfonts")
+        showtext_auto_fn <- utils::getFromNamespace("showtext_auto", "showtext")
+        showtext_opts_fn <- utils::getFromNamespace("showtext_opts", "showtext")
+
+        font_add_fn(family = "Inter", regular = regular_font, bold = semibold_font)
+        showtext_auto_fn()
+        showtext_opts_fn(dpi = 300)
+      }, silent = TRUE)
+    }
+  }
   
   ggplot2::theme_bw()+
   ggplot2::theme(

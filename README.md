@@ -82,14 +82,13 @@ pip install matplotlib pandas
 
 ### 3) Fuente Inter
 
-Las fuentes deben existir en `assets/fonts/Inter/`. Si no están, descárgalas desde:
+Las fuentes Inter vienen incluidas dentro de los paquetes. Si trabajas desde el repo (sin instalar),
+asegúrate de que existan en `assets/fonts/Inter/`. Si no están, descárgalas desde:
 https://github.com/rsms/inter/releases
 
 Archivos esperados:
 - `Inter-Regular.ttf`
 - `Inter-SemiBold.ttf`
-
-Si no están, se usará la fuente por defecto del sistema.
 
 ## Uso en R (ggplot2)
 

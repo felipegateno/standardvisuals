@@ -52,6 +52,12 @@ def _register_font_from_repo(font_family, tokens_path):
     possible_dirs.append(os.path.join(os.getcwd(), "assets", "fonts", "Inter"))
     for parent in Path(__file__).resolve().parents:
         possible_dirs.append(str(parent / "assets" / "fonts" / "Inter"))
+    try:
+        possible_dirs.append(
+            str(resources.files("pystandarvisuals").joinpath("assets/fonts/Inter"))
+        )
+    except Exception:
+        pass
     font_dir = next((d for d in possible_dirs if os.path.exists(d)), None)
     if not font_dir:
         return font_family

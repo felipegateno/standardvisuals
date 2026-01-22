@@ -16,6 +16,9 @@ dist/
 .RData
 .Ruserdata
 .Rproj.user/
+examples/.Rhistory
+examples/.Rproj.user/
+examples/*.Rproj
 *.Rcheck/
 *.tar.gz
 
