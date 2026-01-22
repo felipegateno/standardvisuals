@@ -1,0 +1,50 @@
+{
+  "typography": {
+    "title": {
+      "family": "Inter",
+      "size": 14,
+      "color": "#000000"
+    },
+    "subtitle": {
+      "family": "Inter",
+      "size": 12,
+      "color": "#000000"
+    },
+    "axis_title": {
+      "family": "Inter",
+      "size": 11,
+      "color": "#000000"
+    },
+    "axis_text": {
+      "family": "Inter",
+      "size": 11,
+      "color": "#000000"
+    },
+    "panel_title": {
+      "family": "Inter",
+      "size": 11,
+      "color": "#000000"
+    }
+  },
+  "borders": {
+    "figure": {
+      "color": "#333333",
+      "linewidth": 0.9
+    },
+    "panel": {
+      "color": "#333333",
+      "linewidth": 0.9
+    }
+  },
+  "grid": {
+    "major": {
+      "color": "#E5E5E5",
+      "linewidth": 0.4
+    },
+    "minor": {
+      "color": "#E5E5E5",
+      "linewidth": 0.4
+    }
+  }
+}
+

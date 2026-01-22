@@ -3,12 +3,15 @@
 #' Lee un JSON de tokens de estilo y construye un theme de ggplot2
 #' aplicable a cualquier gráfico ya creado.
 #'
-#' @param tokens_path Ruta al archivo JSON de tokens.
+#' @param tokens_path Ruta al archivo JSON de tokens (opcional).
 #' @return Objeto theme de ggplot2.
 #' @importFrom jsonlite fromJSON
 #' @importFrom ggplot2 theme element_text element_line element_rect element_blank
 #' @export
-create_theme_from_tokens <- function(tokens_path = "style_tokens.json") {
+create_theme_from_tokens <- function(tokens_path = NULL) {
+  if (is.null(tokens_path)) {
+    tokens_path <- system.file("style_tokens.json", package = "rstandarvisuals")
+  }
   if (!file.exists(tokens_path)) {
     stop("No se encontró el archivo de tokens en: ", tokens_path)
   }

@@ -5,6 +5,7 @@ Aplicar tokens de estilo a un eje ya creado (matplotlib).
 import json
 import os
 from pathlib import Path
+import importlib.resources as resources
 
 import matplotlib as mpl
 from matplotlib import font_manager as fm
@@ -17,17 +18,19 @@ def _resolve_tokens_path(tokens_path):
         candidates.append(os.path.join(os.getcwd(), tokens_path))
         for parent in Path(__file__).resolve().parents:
             candidates.append(str(parent / tokens_path))
-    else:
-        for parent in Path(__file__).resolve().parents:
-            candidates.append(str(parent / "style_tokens.json"))
+    for parent in Path(__file__).resolve().parents:
+        candidates.append(str(parent / "style_tokens.json"))
 
     for path in candidates:
         if os.path.exists(path):
             return path
 
-    raise FileNotFoundError(
-        "No se encontró el archivo de tokens. Buscado en: " + ", ".join(candidates)
-    )
+    try:
+        return str(resources.files("pystandarvisuals").joinpath("data/style_tokens.json"))
+    except Exception:
+        raise FileNotFoundError(
+            "No se encontró el archivo de tokens. Buscado en: " + ", ".join(candidates)
+        )
 
 
 def _load_tokens(tokens_path):

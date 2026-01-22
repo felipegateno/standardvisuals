@@ -12,3 +12,6 @@ dependencies = ["matplotlib"]
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+pystandarvisuals = ["data/style_tokens.json"]
+

@@ -108,7 +108,7 @@ source("rstandarvisuals/R/create_theme_from_tokens.R")
 p <- ggplot(data, aes(x, y)) +
   geom_line() +
   labs(title = "Título", subtitle = "Subtítulo", x = "Eje X", y = "Eje Y") +
-  create_theme_from_tokens("style_tokens.json")
+  create_theme_from_tokens()
 
 print(p)
 ```
@@ -137,7 +137,7 @@ ax.set_title("Título")
 ax.set_xlabel("Eje X")
 ax.set_ylabel("Eje Y")
 
-create_theme_from_tokens(ax, "style_tokens.json")
+create_theme_from_tokens(ax)
 plt.show()
 ```
 
@@ -146,7 +146,7 @@ Si usas `subplots=True` en pandas:
 ```python
 axes = df.plot(subplots=True, grid=True)
 for ax in axes:
-    create_theme_from_tokens(ax, "style_tokens.json")
+    create_theme_from_tokens(ax)
 ```
 
 ## Scripts de prueba
