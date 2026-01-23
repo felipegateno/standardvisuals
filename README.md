@@ -62,12 +62,29 @@ La fuente definida para los gráficos es Inter, cuya previsuzalización se prese
 `colors.json` incluye paletas estándar para uso homogéneo en R y Python.
 
 Paletas disponibles:
-- `standarscolors_obsvssim` (2 colores)
-- `standarscolors_divergent`(30 colores)
-- `standarscolors_terrain` (11 colores)
-- `standardscolors_rdylbu` (11 colores)
-- `standardscolors_rdylgn` (11 colores)
-- `standardscolors_rdbu` (11 colores)
+- `standarscolors_obsvssim` (2 colores): 
+  
+  `#000000`, `#0000FF`
+
+- `standarscolors_divergent` (30 colores): 
+  
+  `#0000FF`, `#FF0000`, `#00FF00`, `#000000`, `#FFFF00`, `#FF00FF`, `#00FFFF`, `#808080`, `#C0FFC0`, `#008040`, `#80FF40`, `#FF4080`, `#800040`, `#4080FF`, `#C08000`, `#8000C0`, `#C080FF`, `#000080`, `#00FF80`, `#FFC080`, `#80C0FF`, `#408000`, `#404040`, `#804000`, `#0080C0`, `#4040C0`, `#C0C040`, `#40C040`, `#40C0C0`, `#FF8040`
+
+- `standarscolors_terrain` (11 colores): 
+  
+  `#d8b365`, `#ddbe77`, `#e0c584`, `#e7d6a4`, `#efe7c3`, `#f5f5f5`, `#c9e1d9`, `#9dccbe`, `#71b8a3`, `#5ab4ac`, `#4aa29b`
+
+- `standardscolors_rdylbu` (11 colores): 
+  
+  `#A50026`, `#D73027`, `#F46D43`, `#FDAE61`, `#FEE090`, `#FFFFBF`, `#E0F3F8`, `#ABD9E9`, `#74ADD1`, `#4575B4`, `#313695`
+  
+- `standardscolors_rdylgn` (11 colores): 
+  
+  `#A50026`, `#D73027`, `#F46D43`, `#FDAE61`, `#FEE08B`, `#FFFFBF`, `#D9EF8B`, `#A6D96A`, `#66BD63`, `#1A9850`, `#006837`
+
+- `standardscolors_rdbu` (11 colores): 
+  
+  `#67001F`, `#B2182B`, `#D6604D`, `#F4A582`, `#FDDBC7`, `#F7F7F7`, `#D1E5F0`, `#92C5DE`, `#4393C3`, `#2166AC`, `#053061`
 
 Vista previa:
 
