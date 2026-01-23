@@ -20,11 +20,6 @@ standardvisuals/
 │   ├── DESCRIPTION
 │   ├── NAMESPACE
 │   └── R/create_theme_from_tokens.R
-└── examples/
-    ├── test.py
-    ├── test.R
-    ├── ts_pr_daily.csv
-    └── figures/
 ```
 
 ## Archivo de Tokens
@@ -103,27 +98,107 @@ pip install matplotlib pandas
 install.packages("remotes")
 remotes::install_github("felipegateno/standardvisuals", subdir = "rstandarvisuals")
 
-p <- ggplot(data, aes(x, y)) +
-  geom_line() +
-  labs(title = "Título", subtitle = "Subtítulo", x = "Eje X", y = "Eje Y") +
-  create_theme_from_tokens()
-
-print(p)
-```
-
-### Paletas de colores
-
-```r
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 library(rstandarvisuals)
 
-pal <- get_palette("standarscolors_obsvssim")
-# pal es un vector de colores hex
-```
+# ============================================================
+# 1) Generar serie mensual de temperatura (5 años)
+#    - Estación 1: valores impuestos manualmente
+#    - Estaciones 2–4: desplazamientos ±4 °C
+# ============================================================
 
-Para obtener solo `n` colores (máximo = tamaño de la paleta):
+# Fechas mensuales (5 años)
+fechas <- seq(
+  as.Date("2019-01-01"),
+  by = "month",
+  length.out = 60
+)
 
-```r
-pal <- get_palette("standarscolors_divergent", n = 7)
+# Patrón mensual impuesto manualmente (°C)
+temp_base <- c(
+  22, 22, 21, 18, 15, 12,
+  11, 12, 14, 17, 19, 21
+)
+
+# Repetir patrón 5 veces
+temp_est_1 <- rep(temp_base, 5)
+
+# DataFrame en formato ancho
+data <- data.frame(
+  date = fechas,
+  Estacion_1 = temp_est_1,
+  Estacion_2 = temp_est_1 + 2,   # +2 °C
+  Estacion_3 = temp_est_1 - 2,   # −2 °C
+  Estacion_4 = temp_est_1 + 4    # +4 °C
+)
+
+# ============================================================
+# 2) Gráfico de 2 estaciones
+#    usando standarscolors_obsvssim
+# ============================================================
+
+pal_obs_sim <- get_palette("standarscolors_obsvssim")
+
+data_2 <- data %>%
+  select(date, Estacion_1, Estacion_2) %>%
+  pivot_longer(
+    -date,
+    names_to = "station",
+    values_to = "temperature"
+  )
+
+p1 <- ggplot(data_2, aes(date, temperature, color = station)) +
+  geom_line() +
+  scale_color_manual(values = pal_obs_sim) +
+  scale_x_date(breaks = "1 year",
+               expand = c(0,0))+
+  labs(
+    title = "Temperatura mensual sintética – comparación de 2 estaciones",
+    x = "Fecha",
+    y = "Temperatura mensual [°C]"
+  ) +
+  create_theme_from_tokens()+
+  # considerar que en python la leyenda se ajusta por defecto adentro
+  # considerar tambien que en python por defecto la leyenda se enmarca en negro
+  # debido a esto, es necesario ajustar algunos parámetros directo
+  # desde el theme de ggplot  
+  theme(legend.position = c(0.93, 0.88),
+        legend.title = element_blank(),
+        legend.background = element_rect(color = "black"))
+
+print(p1)
+
+# ============================================================
+# 3) Gráfico de las 4 estaciones
+#    usando standarscolors_divergent (n = 4)
+# ============================================================
+
+pal_div <- get_palette("standarscolors_divergent", n = 4)
+
+data_4 <- data %>%
+  pivot_longer(
+    -date,
+    names_to = "station",
+    values_to = "temperature"
+  )
+
+p2 <- ggplot(data_4, aes(date, temperature, color = station)) +
+  geom_line() +
+  scale_color_manual(values = pal_div) +
+  labs(
+    title = "Temperatura mensual sintética – 4 estaciones",
+    x = "Fecha",
+    y = "Temperatura mensual [°C]"
+  ) +
+  scale_x_date(expand = c(0,0))+
+  create_theme_from_tokens()+
+  theme(legend.position = c(0.05, 0.2),
+        legend.title = element_blank(),
+        legend.background = element_rect(color = "black"))
+
+print(p2)
 ```
 
 ## Uso en Python (matplotlib)
@@ -135,34 +210,88 @@ pip install git+https://github.com/felipegateno/standardvisuals.git#subdirectory
 ```
 
 ```python
-import os
-import sys
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from pystandarvisuals import create_theme_from_tokens, get_palette
 
-fig, ax = plt.subplots()
-ax.plot(x, y)
-ax.set_title("Título")
-ax.set_xlabel("Eje X")
-ax.set_ylabel("Eje Y")
+# ============================================================
+# 1) Generar serie mensual de temperatura (5 años)
+#    - Estación 1: valores impuestos manualmente
+#    - Estaciones 2–4: desplazamientos ±4 °C
+# ============================================================
+
+# Fechas mensuales (5 años)
+fechas = pd.date_range(start="2019-01-01", periods=60, freq="MS")
+
+# Temperatura base mensual (estación 1)
+# Patrón estacional impuesto manualmente (°C)
+temp_base = np.array([
+    22, 22, 21, 18, 15, 12,
+    11, 12, 14, 17, 19, 21
+])
+
+# Repetir patrón 5 veces
+temp_est_1 = np.tile(temp_base, 5)
+
+# Construir DataFrame
+data = pd.DataFrame({
+    "date": fechas,
+    "Estacion_1": temp_est_1,
+    "Estacion_2": temp_est_1 + 2.0,   # +2 °C
+    "Estacion_3": temp_est_1 - 2.0,   # −2 °C
+    "Estacion_4": temp_est_1 + 4.0,   # +4 °C
+})
+
+# ============================================================
+# 2) Gráfico de 2 series (observado vs simulado)
+#    usando standarscolors_obsvssim
+# ============================================================
+
+colors_obs_sim = get_palette("standarscolors_obsvssim")
+
+fig, ax = plt.subplots(figsize=(12, 4))
+
+ax.plot(data["date"], data["Estacion_1"],
+        color=colors_obs_sim[0], label="Estacion_1")
+
+ax.plot(data["date"], data["Estacion_2"],
+        color=colors_obs_sim[1], label="Estacion_2")
+
+ax.set_title("Temperatura mensual sintética – comparación de 2 estaciones")
+ax.set_xlabel("Fecha")
+ax.set_ylabel("Temperatura mensual [°C]")
+ax.legend()
+# por defecto R aprovecha todo el ancho de la hoja, por lo que es necesario
+# editar los margenes de python para tener mayor similitud
+ax.margins(x=0)
+ax.set_xlim(data["date"].min(), data["date"].max())
 
 create_theme_from_tokens(ax)
 plt.show()
-```
 
-### Paletas de colores
+# ============================================================
+# 3) Gráfico de las 4 estaciones
+#    usando standarscolors_divergent (n = 4)
+# ============================================================
 
-```python
-from pystandarvisuals import get_palette
+colors_div = get_palette("standarscolors_divergent", n=4)
 
-pal = get_palette("standarscolors_obsvssim")
-# pal es una lista de colores hex
-```
+fig, ax = plt.subplots(figsize=(12, 4))
 
-Para obtener solo `n` colores (máximo = tamaño de la paleta):
+for i, col in enumerate(["Estacion_1", "Estacion_2", "Estacion_3", "Estacion_4"]):
+    ax.plot(data["date"], data[col],
+            color=colors_div[i], label=col)
 
-```python
-pal = get_palette("standarscolors_divergent", n=7)
+ax.set_title("Temperatura mensual sintética – 4 estaciones")
+ax.set_xlabel("Fecha")
+ax.set_ylabel("Temperatura mensual [°C]")
+ax.legend(ncol=2)
+ax.margins(x=0)
+ax.set_xlim(data["date"].min(), data["date"].max())
+
+create_theme_from_tokens(ax)
+plt.show()
 ```
 
 Si usas `subplots=True` en pandas:
@@ -173,10 +302,15 @@ for ax in axes:
     create_theme_from_tokens(ax)
 ```
 
-## Scripts de prueba
+## Comparación R vs Python
 
-- R: `Rscript examples/test.R`
-- Python: `python examples/test.py`
+### Gráfico 2 estaciones
 
-Ambos scripts usan `examples/ts_pr_daily.csv` y guardan un PNG en `examples/figures/`.
+![R - 2 estaciones](assets/p1_R.png)
+![Python - 2 estaciones](assets/p1_py.png)
+
+### Gráfico 4 estaciones
+
+![R - 4 estaciones](assets/p2_R.png)
+![Python - 4 estaciones](assets/p2_py.png)
 
