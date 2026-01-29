@@ -58,17 +58,21 @@ def load_colors(colors_path=None):
         return json.load(f)
 
 
-def _extract_hex_colors(palette):
-    """Extrae los valores hex de una paleta, manejando diferentes formatos."""
+def _extract_palette_entries(palette):
+    """Normaliza los colores de una paleta en una lista de dict con hex y name."""
     if not palette:
         return []
-    # Si el primer elemento es un string, asumir que es formato antiguo (array de strings)
-    if isinstance(palette[0], str):
-        return palette
-    # Si el primer elemento es un dict, extraer hex
-    if isinstance(palette[0], dict):
-        return [color.get("hex", color) for color in palette]
-    return palette
+    first = palette[0]
+    entries = []
+    if isinstance(first, dict):
+        for color in palette:
+            hex_value = color.get("hex", color)
+            name = color.get("name", "")
+            entries.append({"hex": hex_value, "name": name})
+    else:
+        for color in palette:
+            entries.append({"hex": color, "name": ""})
+    return entries
 
 
 def _select_n(palette, n):
@@ -90,7 +94,7 @@ def _select_n(palette, n):
     return [palette[i] for i in indices]
 
 
-def get_palette(name, colors_path=None, n=None):
+def get_palette(name, colors_path=None, n=None, with_names=True):
     """
     Retorna una paleta por nombre.
 
@@ -106,11 +110,6 @@ def get_palette(name, colors_path=None, n=None):
         Número de colores a retornar (máximo = tamaño de la paleta).
         Si es None, retorna todos los colores de la paleta. Si es menor
         al tamaño total, selecciona colores distribuidos uniformemente.
-
-    Returns
-    -------
-    list
-        Lista de colores en formato hexadecimal (ej: "#FF0000").
 
     Notes
     -----
@@ -132,10 +131,19 @@ def get_palette(name, colors_path=None, n=None):
     - standardcolors_viridis: 11 colores - Paleta viridis (púrpura a amarillo,
       pasando por verde)
 
+    Parameters (añadido)
+    -------------------
+    with_names : bool, optional
+        Si es True (por defecto), retorna una lista de dicts con los campos
+        "hex" y "name". Si se pasa False, retorna únicamente los códigos hex.
+
     Examples
     --------
-    >>> # Obtener todos los colores de una paleta
+    >>> # Obtener todos los colores de una paleta con nombres
     >>> pal = get_palette("standardcolors_obsvssim")
+    >>> 
+    >>> # Solicitar solo los hex, hipotéticamente para compatibilidad
+    >>> pal_hex = get_palette("standardcolors_viridis", with_names=False)
     >>> 
     >>> # Obtener solo 4 colores de una paleta (distribuidos uniformemente)
     >>> pal = get_palette("standardcolors_viridis", n=4)
@@ -160,9 +168,12 @@ def get_palette(name, colors_path=None, n=None):
         palette = palette_data
     else:
         palette = palette_data.get("colors", palette_data)
-    # Extraer valores hex si los colores son objetos
-    palette = _extract_hex_colors(palette)
-    return _select_n(palette, n)
+    palette_entries = _extract_palette_entries(palette)
+    selected = _select_n(palette_entries, n)
+
+    if with_names:
+        return selected
+    return [entry["hex"] for entry in selected]
 
 
 def list_palettes(colors_path=None):

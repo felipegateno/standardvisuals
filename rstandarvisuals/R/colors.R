@@ -39,6 +39,8 @@ load_colors <- function(colors_path = NULL) {
 #' @param n Número de colores a retornar (máximo = tamaño de la paleta).
 #'   Si es NULL, retorna todos los colores de la paleta. Si es menor al
 #'   tamaño total, selecciona colores distribuidos uniformemente.
+#' @param with_names Logical. Si es TRUE (valor por defecto), retorna una lista de listas con los
+#'   campos \code{hex} y \code{name}. Si se pasa FALSE, retorna solamente los hexadecimales.
 #' @return Vector de colores en formato hexadecimal (ej: "#FF0000").
 #'
 #' @details
@@ -72,7 +74,7 @@ load_colors <- function(colors_path = NULL) {
 #' @seealso \code{\link{load_colors}} para cargar todas las paletas,
 #'   \code{\link{list_palettes}} para ver un resumen de paletas disponibles.
 #' @export
-get_palette <- function(name, colors_path = NULL, n = NULL) {
+get_palette <- function(name, colors_path = NULL, n = NULL, with_names = TRUE) {
   palettes <- load_colors(colors_path)
   if (!name %in% names(palettes)) {
     stop("Paleta no encontrada: ", name)
@@ -84,17 +86,25 @@ get_palette <- function(name, colors_path = NULL, n = NULL) {
   } else {
     colors_list <- palette_data
   }
-  
-  # Extraer valores hex: si el primer elemento es un string, usar directamente
-  # Si es una lista con "hex", extraer los valores hex
+  palette_entries <- list()
   if (length(colors_list) > 0 && is.list(colors_list[[1]]) && "hex" %in% names(colors_list[[1]])) {
-    palette <- sapply(colors_list, function(x) x[["hex"]])
+    palette_entries <- lapply(colors_list, function(x) {
+      list(
+        hex = x[["hex"]],
+        name = if (!is.null(x[["name"]])) x[["name"]] else ""
+      )
+    })
   } else {
-    palette <- unlist(colors_list, use.names = FALSE)
+    palette_entries <- lapply(colors_list, function(hex) {
+      list(hex = hex, name = "")
+    })
   }
-  
+
   if (is.null(n)) {
-    return(palette)
+    if (with_names) {
+      return(palette_entries)
+    }
+    return(sapply(palette_entries, function(x) x[["hex"]]))
   }
   if (!is.numeric(n) || length(n) != 1 || is.na(n)) {
     stop("n debe ser un entero válido.")
@@ -103,18 +113,29 @@ get_palette <- function(name, colors_path = NULL, n = NULL) {
   if (n <= 0) {
     stop("n debe ser mayor que 0.")
   }
-  max_n <- length(palette)
+  max_n <- length(palette_entries)
   if (n > max_n) {
     stop("n=", n, " excede el máximo permitido (", max_n, ").")
   }
   if (n == 1) {
-    return(palette[1])
+    single <- palette_entries[1]
+    if (with_names) {
+      return(single)
+    }
+    return(single[[1]])
   }
   if (n == max_n) {
-    return(palette)
+    if (with_names) {
+      return(palette_entries)
+    }
+    return(sapply(palette_entries, function(x) x[["hex"]]))
   }
   idx <- round(seq(1, max_n, length.out = n))
-  palette[idx]
+  selected <- palette_entries[idx]
+  if (with_names) {
+    return(selected)
+  }
+  sapply(selected, function(x) x[["hex"]])
 }
 
 #' @title Listar paletas disponibles

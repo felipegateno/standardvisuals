@@ -62,29 +62,15 @@ La fuente definida para los gráficos es Inter, cuya previsuzalización se prese
 `colors.json` incluye paletas estándar para uso homogéneo en R y Python.
 
 Paletas disponibles:
-- `standarscolors_obsvssim` (2 colores): 
-  
-  `#000000`, `#0000FF`
-
-- `standarscolors_divergent` (30 colores): 
-  
-  `#0000FF`, `#FF0000`, `#00FF00`, `#000000`, `#FFFF00`, `#FF00FF`, `#00FFFF`, `#808080`, `#C0FFC0`, `#008040`, `#80FF40`, `#FF4080`, `#800040`, `#4080FF`, `#C08000`, `#8000C0`, `#C080FF`, `#000080`, `#00FF80`, `#FFC080`, `#80C0FF`, `#408000`, `#404040`, `#804000`, `#0080C0`, `#4040C0`, `#C0C040`, `#40C040`, `#40C0C0`, `#FF8040`
-
-- `standarscolors_terrain` (11 colores): 
-  
-  `#d8b365`, `#ddbe77`, `#e0c584`, `#e7d6a4`, `#efe7c3`, `#f5f5f5`, `#c9e1d9`, `#9dccbe`, `#71b8a3`, `#5ab4ac`, `#4aa29b`
-
-- `standardscolors_rdylbu` (11 colores): 
-  
-  `#A50026`, `#D73027`, `#F46D43`, `#FDAE61`, `#FEE090`, `#FFFFBF`, `#E0F3F8`, `#ABD9E9`, `#74ADD1`, `#4575B4`, `#313695`
-  
-- `standardscolors_rdylgn` (11 colores): 
-  
-  `#A50026`, `#D73027`, `#F46D43`, `#FDAE61`, `#FEE08B`, `#FFFFBF`, `#D9EF8B`, `#A6D96A`, `#66BD63`, `#1A9850`, `#006837`
-
-- `standardscolors_rdbu` (11 colores): 
-  
-  `#67001F`, `#B2182B`, `#D6604D`, `#F4A582`, `#FDDBC7`, `#F7F7F7`, `#D1E5F0`, `#92C5DE`, `#4393C3`, `#2166AC`, `#053061`
+- `standardcolors_obsvssim` (2 colores): negro y azul
+- `standardcolors_divergent` (30 colores): paleta multicolor diversa
+- `standardcolors_terrain` (11 colores): tonos tierra desde marrón hasta verde azulado
+- `standardcolors_rdylbu` (11 colores): paleta Spectral (Rojo-Amarillo-Azul divergente, igual a `sns.color_palette("Spectral")`)
+- `standardcolors_rdylgn` (11 colores): rojo-amarillo-verde divergente
+- `standardcolors_rdbu` (11 colores): paleta coolwarm (Rojo-Azul divergente, igual a `sns.color_palette("coolwarm")`)
+- `standardcolors_rdgn` (11 colores): rojo-verde sin pasar por amarillo
+- `standardcolors_magma` (11 colores): paleta magma (negro a amarillo mediante púrpura/rojo)
+- `standardcolors_viridis` (11 colores): paleta viridis (púrpura a amarillo pasando por verde)
 
 Vista previa:
 
@@ -153,10 +139,10 @@ data <- data.frame(
 
 # ============================================================
 # 2) Gráfico de 2 estaciones
-#    usando standarscolors_obsvssim
+#    usando standardcolors_obsvssim
 # ============================================================
 
-pal_obs_sim <- get_palette("standarscolors_obsvssim")
+pal_obs_sim <- get_palette("standardcolors_obsvssim")
 
 data_2 <- data %>%
   select(date, Estacion_1, Estacion_2) %>%
@@ -189,10 +175,10 @@ print(p1)
 
 # ============================================================
 # 3) Gráfico de las 4 estaciones
-#    usando standarscolors_divergent (n = 4)
+#    usando standardcolors_divergent (n = 4)
 # ============================================================
 
-pal_div <- get_palette("standarscolors_divergent", n = 4)
+pal_div <- get_palette("standardcolors_divergent", n = 4)
 
 data_4 <- data %>%
   pivot_longer(
@@ -262,10 +248,10 @@ data = pd.DataFrame({
 
 # ============================================================
 # 2) Gráfico de 2 series (observado vs simulado)
-#    usando standarscolors_obsvssim
+#    usando standardcolors_obsvssim
 # ============================================================
 
-colors_obs_sim = get_palette("standarscolors_obsvssim")
+colors_obs_sim = get_palette("standardcolors_obsvssim")
 
 fig, ax = plt.subplots(figsize=(12, 4))
 
@@ -289,10 +275,10 @@ plt.show()
 
 # ============================================================
 # 3) Gráfico de las 4 estaciones
-#    usando standarscolors_divergent (n = 4)
+#    usando standardcolors_divergent (n = 4)
 # ============================================================
 
-colors_div = get_palette("standarscolors_divergent", n=4)
+colors_div = get_palette("standardcolors_divergent", n=4)
 
 fig, ax = plt.subplots(figsize=(12, 4))
 
