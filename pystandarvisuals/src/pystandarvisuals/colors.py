@@ -75,26 +75,26 @@ def _extract_palette_entries(palette):
     return entries
 
 
-def _select_n(palette, n):
+def _select_n_entries(entries, n):
     if n is None:
-        return palette
+        return entries
     if not isinstance(n, int):
         raise TypeError("n debe ser un entero.")
     if n <= 0:
         raise ValueError("n debe ser mayor que 0.")
-    max_n = len(palette)
+    max_n = len(entries)
     if n > max_n:
         raise ValueError(f"n={n} excede el máximo permitido ({max_n}).")
     if n == 1:
-        return [palette[0]]
+        return [entries[0]]
     if n == max_n:
-        return palette
+        return entries
     step = (max_n - 1) / (n - 1)
     indices = [round(i * step) for i in range(n)]
-    return [palette[i] for i in indices]
+    return [entries[i] for i in indices]
 
 
-def get_palette(name, colors_path=None, n=None, with_names=True):
+def get_palette(name, colors_path=None, n=None, dict_output=True):
     """
     Retorna una paleta por nombre.
 
@@ -133,9 +133,9 @@ def get_palette(name, colors_path=None, n=None, with_names=True):
 
     Parameters (añadido)
     -------------------
-    with_names : bool, optional
-        Si es True (por defecto), retorna una lista de dicts con los campos
-        "hex" y "name". Si se pasa False, retorna únicamente los códigos hex.
+    dict_output : bool, optional
+        Si es True (valor por defecto) retorna un dict {name: hex}. Si es False,
+        retorna la lista de dicts con campos "hex" y "name".
 
     Examples
     --------
@@ -143,7 +143,7 @@ def get_palette(name, colors_path=None, n=None, with_names=True):
     >>> pal = get_palette("standardcolors_obsvssim")
     >>> 
     >>> # Solicitar solo los hex, hipotéticamente para compatibilidad
-    >>> pal_hex = get_palette("standardcolors_viridis", with_names=False)
+    >>> pal_hex = get_palette("standardcolors_viridis", dict_output=False)
     >>> 
     >>> # Obtener solo 4 colores de una paleta (distribuidos uniformemente)
     >>> pal = get_palette("standardcolors_viridis", n=4)
@@ -163,17 +163,22 @@ def get_palette(name, colors_path=None, n=None, with_names=True):
     if name not in colors:
         raise KeyError(f"Paleta no encontrada: {name}")
     palette_data = colors[name]
-    # Compatibilidad: si es un array, usarlo directamente; si es un objeto, usar colors
-    if isinstance(palette_data, list):
-        palette = palette_data
+    if isinstance(palette_data, dict) and "colors" in palette_data:
+        palette = palette_data["colors"]
     else:
-        palette = palette_data.get("colors", palette_data)
-    palette_entries = _extract_palette_entries(palette)
-    selected = _select_n(palette_entries, n)
+        palette = palette_data
 
-    if with_names:
+    palette_entries = _extract_palette_entries(palette)
+    selected = _select_n_entries(palette_entries, n)
+
+    if not dict_output:
         return selected
-    return [entry["hex"] for entry in selected]
+
+    result = {}
+    for idx, entry in enumerate(selected):
+        key = entry["name"] or f"color_{idx}"
+        result[key] = entry["hex"]
+    return result
 
 
 def list_palettes(colors_path=None):

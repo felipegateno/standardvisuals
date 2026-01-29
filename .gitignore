@@ -35,4 +35,6 @@ Desktop.ini
 # Outputs
 examples/figures/
 figures/
+# Ignored demos
+pystandarvisuals/readme_example.py
 
