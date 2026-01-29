@@ -72,6 +72,8 @@ Paletas disponibles:
 - `standardcolors_magma` (11 colores): paleta magma (negro a amarillo mediante púrpura/rojo)
 - `standardcolors_viridis` (11 colores): paleta viridis (púrpura a amarillo pasando por verde)
 
+Para obtener fácilmente nombres y número de colores de cada paleta puedes llamar a `list_palettes()` después de instalar cualquiera de los paquetes; la salida muestra `name`, `n_colors` y `color_name`, y a partir de ahí puedes usar directamente los nombres de color devueltos por `get_palette()`.
+
 Vista previa:
 
 ![Vista previa de paletas](assets/palette_preview.png)
@@ -255,11 +257,19 @@ colors_obs_sim = get_palette("standardcolors_obsvssim")
 
 fig, ax = plt.subplots(figsize=(12, 4))
 
-ax.plot(data["date"], data["Estacion_1"],
-        color=colors_obs_sim[0], label="Estacion_1")
+ax.plot(
+    data["date"],
+    data["Estacion_1"],
+    color=colors_obs_sim["black"],
+    label="Estacion_1",
+)
 
-ax.plot(data["date"], data["Estacion_2"],
-        color=colors_obs_sim[1], label="Estacion_2")
+ax.plot(
+    data["date"],
+    data["Estacion_2"],
+    color=colors_obs_sim["pure_blue"],
+    label="Estacion_2",
+)
 
 ax.set_title("Temperatura mensual sintética – comparación de 2 estaciones")
 ax.set_xlabel("Fecha")
@@ -282,9 +292,9 @@ colors_div = get_palette("standardcolors_divergent", n=4)
 
 fig, ax = plt.subplots(figsize=(12, 4))
 
-for i, col in enumerate(["Estacion_1", "Estacion_2", "Estacion_3", "Estacion_4"]):
-    ax.plot(data["date"], data[col],
-            color=colors_div[i], label=col)
+for i, (color_name, color_hex) in enumerate(colors_div.items()):
+    col = ["Estacion_1", "Estacion_2", "Estacion_3", "Estacion_4"][i]
+    ax.plot(data["date"], data[col], color=color_hex, label=f"{col} ({color_name})")
 
 ax.set_title("Temperatura mensual sintética – 4 estaciones")
 ax.set_xlabel("Fecha")
@@ -295,7 +305,10 @@ ax.set_xlim(data["date"].min(), data["date"].max())
 
 create_theme_from_tokens(ax)
 plt.show()
+
 ```
+
+> `get_palette()` retorna ahora un diccionario `name → hex` por defecto. Si necesitas los hex sin nombres, usa `dict_output=False` (por ejemplo `get_palette("standardcolors_obsvssim", dict_output=False)`). De paso, los nombres están disponibles tanto en R como en Python.
 
 Si usas `subplots=True` en pandas:
 

@@ -4,7 +4,7 @@
 \alias{get_palette}
 \title{Obtener una paleta por nombre}
 \usage{
-get_palette(name, colors_path = NULL, n = NULL)
+get_palette(name, colors_path = NULL, n = NULL, dict_output = TRUE)
 }
 \arguments{
 \item{name}{Nombre de la paleta. Debe ser uno de los nombres disponibles.
@@ -16,6 +16,10 @@ usa el archivo incluido en el paquete.}
 \item{n}{Número de colores a retornar (máximo = tamaño de la paleta).
 Si es NULL, retorna todos los colores de la paleta. Si es menor al
 tamaño total, selecciona colores distribuidos uniformemente.}
+
+\item{dict_output}{Logical. Si es TRUE (valor por defecto) retorna un vector
+nombrado con los hexadecimales. Si es FALSE, retorna una lista de listas
+con los campos \code{hex} y \code{name}.}
 }
 \value{
 Vector de colores en formato hexadecimal (ej: "#FF0000").
