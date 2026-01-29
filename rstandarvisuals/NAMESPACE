@@ -1,6 +1,7 @@
 export(create_theme_from_tokens)
 export(load_colors)
 export(get_palette)
+export(list_palettes)
 importFrom(ggplot2,theme,theme_bw,element_text,element_line,element_rect,element_blank)
 importFrom(jsonlite,fromJSON)
 importFrom(grid,unit)

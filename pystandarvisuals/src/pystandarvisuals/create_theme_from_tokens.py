@@ -86,21 +86,51 @@ def _register_font_from_repo(font_family, tokens_path):
 
 def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
     """
-    Aplica los tokens de estilo a un eje ya creado.
+    Aplica los tokens de estilo estandarizados a un eje de matplotlib ya creado.
+    
+    Esta función aplica los estilos definidos en style_tokens.json a un gráfico
+    existente, incluyendo tipografía (fuente Inter, tamaños), bordes, y grillas.
     
     Parameters
     ----------
     ax : matplotlib.axes.Axes
-        Eje a modificar.
-    tokens_path : str
-        Ruta al archivo JSON de tokens.
+        Eje a modificar. Debe ser un objeto Axes de matplotlib.
+    tokens_path : str, optional
+        Ruta al archivo JSON de tokens. Si no se especifica, busca el archivo
+        incluido en el paquete.
     tokens : dict, optional
-        Tokens ya cargados (opcional).
+        Diccionario con tokens ya cargados. Si se proporciona, se usa en lugar
+        de cargar desde tokens_path.
     
     Returns
     -------
     matplotlib.axes.Axes
         El mismo eje con estilos aplicados.
+    
+    Examples
+    --------
+    >>> import matplotlib.pyplot as plt
+    >>> from pystandarvisuals import create_theme_from_tokens
+    >>> 
+    >>> fig, ax = plt.subplots()
+    >>> ax.plot([1, 2, 3], [1, 4, 9])
+    >>> ax.set_title("Mi gráfico")
+    >>> ax.set_xlabel("Eje X")
+    >>> ax.set_ylabel("Eje Y")
+    >>> create_theme_from_tokens(ax)
+    >>> plt.show()
+    
+    Notes
+    -----
+    Los tokens aplicados incluyen:
+    - Tipografía: fuente Inter, tamaños estándar para títulos, subtítulos,
+      etiquetas de ejes y texto de ejes
+    - Bordes: color y grosor para figura y panel
+    - Grillas: color y grosor para grillas mayor y menor
+    
+    See Also
+    --------
+    get_palette : Obtener paletas de colores estandarizadas
     """
     if tokens is None:
         tokens, tokens_path = _load_tokens(tokens_path)

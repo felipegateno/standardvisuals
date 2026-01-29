@@ -1,10 +1,36 @@
 #' @title Crear theme desde style_tokens.json
 #' @description
 #' Lee un JSON de tokens de estilo y construye un theme de ggplot2
-#' aplicable a cualquier gráfico ya creado.
+#' aplicable a cualquier gráfico ya creado. Aplica estilos estandarizados
+#' incluyendo tipografía (fuente Inter, tamaños), bordes y grillas.
 #'
-#' @param tokens_path Ruta al archivo JSON de tokens (opcional).
-#' @return Objeto theme de ggplot2.
+#' @param tokens_path Ruta al archivo JSON de tokens (opcional). Si es NULL,
+#'   usa el archivo incluido en el paquete.
+#' @return Objeto theme de ggplot2 que puede ser agregado a cualquier gráfico
+#'   con el operador \code{+}.
+#'
+#' @details
+#' Los tokens aplicados incluyen:
+#' \itemize{
+#'   \item Tipografía: fuente Inter, tamaños estándar para títulos, subtítulos,
+#'     etiquetas de ejes y texto de ejes
+#'   \item Bordes: color y grosor para figura y panel
+#'   \item Grillas: color y grosor para grillas mayor y menor
+#' }
+#'
+#' @examples
+#' library(ggplot2)
+#' library(rstandarvisuals)
+#'
+#' # Crear un gráfico básico
+#' p <- ggplot(mtcars, aes(x = mpg, y = hp)) +
+#'   geom_point() +
+#'   labs(title = "Mi gráfico", x = "Millas por galón", y = "Caballos de fuerza")
+#'
+#' # Aplicar theme estandarizado
+#' p + create_theme_from_tokens()
+#'
+#' @seealso \code{\link{get_palette}} para obtener paletas de colores estandarizadas
 #' @importFrom jsonlite fromJSON
 #' @importFrom ggplot2 theme element_text element_line element_rect element_blank
 #' @export

@@ -26,7 +26,19 @@ def main():
         axes = [axes]
 
     for ax, name in zip(axes, names):
-        palette = palettes[name]
+        palette_data = palettes[name]
+        # Compatibilidad: si es un array, usarlo directamente; si es un objeto, usar colors
+        if isinstance(palette_data, list):
+            colors_list = palette_data
+        else:
+            colors_list = palette_data.get("colors", palette_data)
+        
+        # Extraer valores hex si los colores son objetos
+        if colors_list and isinstance(colors_list[0], dict):
+            palette = [c.get("hex", c) for c in colors_list]
+        else:
+            palette = colors_list
+        
         rgb = [to_rgb(c) for c in palette]
         ax.imshow([rgb], aspect="auto")
         ax.set_yticks([])
