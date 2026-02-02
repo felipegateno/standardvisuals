@@ -200,12 +200,12 @@ def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
         color=grid["major"]["color"],
         linewidth=grid["major"]["linewidth"],
     )
-    ax.grid(
-        True,
-        which="minor",
-        color=grid["minor"]["color"],
-        linewidth=grid["minor"]["linewidth"],
-    )
+    # ax.grid(
+    #     True,
+    #     which="minor",
+    #     color=grid["minor"]["color"],
+    #     linewidth=grid["minor"]["linewidth"],
+    # )
 
     # Forzar actualización de fuente en ejes
     mpl.rcParams["font.family"] = font_family
