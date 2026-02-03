@@ -2,27 +2,27 @@
   "typography": {
     "title": {
       "family": "Inter",
-      "size": 14,
+      "size": 20,
       "color": "#000000"
     },
     "subtitle": {
       "family": "Inter",
-      "size": 12,
+      "size": 18,
       "color": "#000000"
     },
     "axis_title": {
       "family": "Inter",
-      "size": 11,
+      "size": 18,
       "color": "#000000"
     },
     "axis_text": {
       "family": "Inter",
-      "size": 11,
+      "size": 16,
       "color": "#000000"
     },
     "panel_title": {
       "family": "Inter",
-      "size": 11,
+      "size": 18,
       "color": "#000000"
     }
   },

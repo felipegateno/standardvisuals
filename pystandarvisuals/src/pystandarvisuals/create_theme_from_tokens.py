@@ -142,6 +142,17 @@ def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
     fig = ax.figure
     font_family = _register_font_from_repo(typo["axis_text"]["family"], tokens_path)
 
+    mpl.rcParams.update(
+        {
+            "axes.labelsize": typo["axis_title"]["size"],
+            "xtick.labelsize": typo["axis_text"]["size"],
+            "ytick.labelsize": typo["axis_text"]["size"],
+            "legend.fontsize": typo["axis_text"]["size"],
+            "axes.titlesize": typo["title"]["size"],
+            "font.family": font_family,
+        }
+    )
+
     # Tipografía de títulos
     if fig._suptitle is not None:
         fig._suptitle.set_fontfamily(font_family)
@@ -204,9 +215,6 @@ def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
         False,
         which="minor"
     )
-
-    # Forzar actualización de fuente en ejes
-    mpl.rcParams["font.family"] = font_family
 
     return ax
 
