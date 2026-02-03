@@ -138,7 +138,6 @@ def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
     typo = tokens["typography"]
     borders = tokens["borders"]
     grid = tokens["grid"]
-    print(grid)
 
     fig = ax.figure
     font_family = _register_font_from_repo(typo["axis_text"]["family"], tokens_path)
@@ -195,8 +194,6 @@ def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
     fig.patch.set_linewidth(borders["figure"]["linewidth"])
 
     # Grillas
-    print(grid["major"]["linewidth"])
-    print(grid["major"]["color"])
     ax.grid(
         True,
         which="major",
@@ -205,9 +202,7 @@ def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
     )
     ax.grid(
         False,
-        which="minor",
-        color=grid["minor"]["color"],
-        linewidth=grid["minor"]["linewidth"],
+        which="minor"
     )
 
     # Forzar actualización de fuente en ejes
