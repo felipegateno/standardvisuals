@@ -38,12 +38,12 @@
   },
   "grid": {
     "major": {
-      "color": "#E5E5E5",
-      "linewidth": 0.8
+      "color": "#4F4F4F00",
+      "linewidth": 0.4
     },
     "minor": {
-      "color": "#E5E5E5",
-      "linewidth": 0.8
+      "color": "#4F4F4F00",
+      "linewidth": 0.2
     }
   }
 }
