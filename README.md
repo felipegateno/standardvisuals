@@ -74,6 +74,26 @@ Paletas disponibles:
 
 Para obtener fácilmente nombres y número de colores de cada paleta puedes llamar a `list_palettes()` después de instalar cualquiera de los paquetes; la salida muestra `name`, `n_colors` y `color_name`, y a partir de ahí puedes usar directamente los nombres de color devueltos por `get_palette()`.
 
+### Sincronización de JSON (pre-commit)
+
+Los archivos "madre" son `colors.json` y `style_tokens.json` en la raíz del repo. Para propagar cambios hacia `pystandarvisuals/src/pystandarvisuals/data/` y `rstandarvisuals/inst/`:
+
+```bash
+python sync_json.py
+```
+
+Además, hay un hook `pre-commit` que ejecuta `sync_json.py` automáticamente y aborta el commit si detecta cambios pendientes de agregar. Si clonas el repo en otra máquina, recuerda copiar el hook a `.git/hooks/pre-commit` o instalarlo según tu flujo.
+
+Para instalar el hook rápidamente:
+
+```bash
+# Windows PowerShell
+.\install_hooks.ps1
+
+# macOS/Linux
+./install_hooks.sh
+```
+
 Vista previa:
 
 ![Vista previa de paletas](assets/palette_preview.png)
