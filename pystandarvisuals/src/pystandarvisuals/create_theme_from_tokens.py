@@ -199,6 +199,7 @@ def create_theme_from_tokens(ax, tokens_path="style_tokens.json", tokens=None):
         which="major",
         color=grid["major"]["color"],
         linewidth=grid["major"]["linewidth"],
+        zorder=0,
     )
     # ax.grid(
     #     True,
